@@ -16,4 +16,4 @@ const myFunc = (x) => {
     return x * x;
 };
 exports.myFunc = myFunc;
-// module.exports = {myFunc}
+exports.default = app;

@@ -10,8 +10,4 @@ app.listen(port, () => {
     console.log(`Now listening on port ${port}`)
 })
 
-export const myFunc = (x: number): number => {
-    return x * x
-}
-
-// module.exports = {myFunc}
+export default app

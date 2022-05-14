@@ -16,7 +16,6 @@ exports.resizer = void 0;
 const sharp_1 = __importDefault(require("sharp"));
 function resizer(name, height, width) {
     return __awaiter(this, void 0, void 0, function* () {
-        // console.log('xxx', h, w)
         try {
             yield (0, sharp_1.default)(`src/assets/full/${name}.jpg`)
                 .resize(width, height)
