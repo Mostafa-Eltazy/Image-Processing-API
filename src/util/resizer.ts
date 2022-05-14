@@ -5,11 +5,10 @@ async function resizer(
     height: number,
     width: number
 ): Promise<void> {
-    // console.log('xxx', h, w)
     try {
         await sharp(`src/assets/full/${name}.jpg`)
             .resize(width, height)
-            .toFile(`src/assets/thumb/${name}.jpg`)
+            .toFile(`src/assets/thumb/${name}-thumb.jpg`)
     } catch (error) {
         console.log(error)
     }

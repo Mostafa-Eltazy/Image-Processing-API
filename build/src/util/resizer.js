@@ -20,7 +20,7 @@ function resizer(name, height, width) {
         try {
             yield (0, sharp_1.default)(`src/assets/full/${name}.jpg`)
                 .resize(width, height)
-                .toFile(`src/assets/thumb/${name}.jpg`);
+                .toFile(`src/assets/thumb/${name}-thumb.jpg`);
         }
         catch (error) {
             console.log(error);

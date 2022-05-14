@@ -24,14 +24,25 @@ imageRoute.get(
             const name = req.query.name as string
             const width = Number(req.query.width)
             const height = Number(req.query.height)
+            // check if file is present in the thumb output directory
             try {
-                // call the resizer function to accept data and output the result in the output directory
-                await resizer(name, width, height)
-                const inputFile = await fs.readFile(
-                    `src/assets/thumb/${req.query.name}.jpg`
+                const thumbImage = await fs.readFile(
+                    `src/assets/thumb/${name}-thumb.jpg`
                 )
-                // return thumb image to the browser
-                res.status(200).end(inputFile)
+                res.status(200).end(thumbImage)
+            } catch (err) {
+                console.log(
+                    'Image has not been resized before, resizing in progress'
+                )
+            }
+            // call the resizer function to accept data and output the result in the output directory
+            try {
+                await resizer(name, width, height)
+                const newThumbImg = await fs.readFile(
+                    `src/assets/thumb/${name}-thumb.jpg`
+                )
+                // return new thumb image to the browser
+                res.status(200).end(newThumbImg)
             } catch (err) {
                 res.status(500).send('Something went wrong!')
             }

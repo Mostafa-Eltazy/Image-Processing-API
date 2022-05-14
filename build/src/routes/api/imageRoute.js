@@ -24,17 +24,25 @@ imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         Number(req.query.width) > 0 &&
         !Number.isNaN(Number(req.query.width));
     const completeData = req.query.name && properHeightValue && properWidthValue;
+    // if data is complete, acess the values from the url
     if (completeData) {
-        // if data is complete, acess the values from the url
         const name = req.query.name;
         const width = Number(req.query.width);
         const height = Number(req.query.height);
+        // check if file is present in the thumb output directory
         try {
-            // call the resizer function to accept data and output the result in the output directory
+            const thumbImage = yield fs_1.promises.readFile(`src/assets/thumb/${name}-thumb.jpg`);
+            res.status(200).end(thumbImage);
+        }
+        catch (err) {
+            console.log('Image has not been resized before, resizing in progress');
+        }
+        // call the resizer function to accept data and output the result in the output directory
+        try {
             yield (0, resizer_1.resizer)(name, width, height);
-            const inputFile = yield fs_1.promises.readFile(`src/assets/thumb/${req.query.name}.jpg`);
-            // return thumb image to the browser
-            res.status(200).end(inputFile);
+            const newThumbImg = yield fs_1.promises.readFile(`src/assets/thumb/${name}-thumb.jpg`);
+            // return new thumb image to the browser
+            res.status(200).end(newThumbImg);
         }
         catch (err) {
             res.status(500).send('Something went wrong!');
