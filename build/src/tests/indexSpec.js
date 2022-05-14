@@ -24,4 +24,8 @@ describe('Test endpoint response', () => {
         const response = yield request.get('/images');
         expect(response.status).toBe(400);
     }));
+    it('gets the /image api endpoint with correct params', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/images?name=cat&height=200&width=200');
+        expect(response.status).toBe(200);
+    }));
 });

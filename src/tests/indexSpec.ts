@@ -11,4 +11,11 @@ describe('Test endpoint response', () => {
         const response = await request.get('/images')
         expect(response.status).toBe(400)
     })
+
+    it('gets the /image api endpoint with correct params', async () => {
+        const response = await request.get(
+            '/images?name=cat&height=200&width=200'
+        )
+        expect(response.status).toBe(200)
+    })
 })
