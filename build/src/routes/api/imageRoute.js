@@ -14,8 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const fs_1 = require("fs");
+const fs_2 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const resizer_1 = require("../../util/resizer");
 const imageRoute = express_1.default.Router();
+const dir = path_1.default.join(__dirname, '../../assets/full');
+//thumbnail directory
+const thumbDir = path_1.default.join(__dirname, '../../assets/thumb');
 imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const properHeightValue = req.query.height &&
         Number(req.query.height) > 0 &&
@@ -29,9 +34,14 @@ imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const name = req.query.name;
         const width = Number(req.query.width);
         const height = Number(req.query.height);
+        console.log(dir, thumbDir);
+        //chech if the Tumb folder is present in the build, else create it
+        if (!fs_2.default.existsSync(thumbDir)) {
+            yield fs_2.default.promises.mkdir(thumbDir);
+        }
         // check if file is present in the thumb output directory
         try {
-            const thumbImage = yield fs_1.promises.readFile(`src/assets/thumb/${name}-thumb.jpg`);
+            const thumbImage = yield fs_1.promises.readFile(`${thumbDir}/${name}-thumb.jpg`);
             res.status(200).end(thumbImage);
         }
         catch (err) {
@@ -40,12 +50,17 @@ imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // call the resizer function to accept data and output the result in the output directory
         try {
             yield (0, resizer_1.resizer)(name, width, height);
-            const newThumbImg = yield fs_1.promises.readFile(`src/assets/thumb/${name}-thumb.jpg`);
-            // return new thumb image to the browser
+        }
+        catch (err) {
+            res.status(500).send('Image failed to resize!');
+        }
+        // fetch the image from the thumbs directory to send to user
+        try {
+            const newThumbImg = yield fs_1.promises.readFile(`${thumbDir}/${name}-thumb.jpg`);
             res.status(200).end(newThumbImg);
         }
         catch (err) {
-            res.status(500).send('Something went wrong!');
+            res.status(500).send("Something Went Wrong !!");
         }
     }
     else

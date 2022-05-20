@@ -14,15 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resizer = void 0;
 const sharp_1 = __importDefault(require("sharp"));
+const path_1 = __importDefault(require("path"));
+const dir = path_1.default.join(__dirname, '../../src/assets/full');
+//thumbnail directory
+const thumbDir = path_1.default.join(__dirname, '../../src/assets/thumb');
 function resizer(name, height, width) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(dir);
         try {
-            yield (0, sharp_1.default)(`src/assets/full/${name}.jpg`)
+            yield (0, sharp_1.default)(`${dir}/${name}.jpg`)
                 .resize(width, height)
-                .toFile(`src/assets/thumb/${name}-thumb.jpg`);
+                .toFile(`${thumbDir}/${name}-thumb.jpg`);
         }
         catch (error) {
-            console.log(error);
+            console.log('The Image was not found to be resized');
         }
     });
 }

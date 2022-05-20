@@ -1,8 +1,15 @@
 import express from 'express'
-import { promises as fs } from 'fs'
+import { promises as fsPromises } from 'fs'
+import fs from 'fs'
+import path from 'path'
 import { resizer } from '../../util/resizer'
 
 const imageRoute = express.Router()
+
+const dir = path.join(__dirname, '../../assets/full')
+
+//thumbnail directory
+const thumbDir = path.join(__dirname, '../../assets/thumb')
 
 imageRoute.get(
     '/',
@@ -24,10 +31,15 @@ imageRoute.get(
             const name = req.query.name as string
             const width = Number(req.query.width)
             const height = Number(req.query.height)
+
+            //chech if the Tumb folder is present in the build, else create it
+            if (!fs.existsSync(thumbDir)) {
+                await fs.promises.mkdir(thumbDir)
+            }
             // check if file is present in the thumb output directory
             try {
-                const thumbImage = await fs.readFile(
-                    `src/assets/thumb/${name}-thumb.jpg`
+                const thumbImage = await fsPromises.readFile(
+                    `${thumbDir}/${name}-thumb.jpg`
                 )
                 res.status(200).end(thumbImage)
             } catch (err) {
@@ -38,13 +50,17 @@ imageRoute.get(
             // call the resizer function to accept data and output the result in the output directory
             try {
                 await resizer(name, width, height)
-                const newThumbImg = await fs.readFile(
-                    `src/assets/thumb/${name}-thumb.jpg`
+            } catch (err) {
+                res.status(500).send('Image failed to resize!')
+            }
+            // fetch the image from the thumbs directory to send to user
+            try {
+                const newThumbImg = await fsPromises.readFile(
+                    `${thumbDir}/${name}-thumb.jpg`
                 )
-                // return new thumb image to the browser
                 res.status(200).end(newThumbImg)
             } catch (err) {
-                res.status(500).send('Something went wrong!')
+                res.status(500).send('Something Went Wrong !!')
             }
         } else res.status(400).send('Invalid user input')
     }
