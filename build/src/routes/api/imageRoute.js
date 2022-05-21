@@ -28,13 +28,19 @@ imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const properWidthValue = req.query.width &&
         Number(req.query.width) > 0 &&
         !Number.isNaN(Number(req.query.width));
+    console.log(properHeightValue, properWidthValue);
     const completeData = req.query.name && properHeightValue && properWidthValue;
+    if (!properWidthValue) {
+        return res.status(400).send('invalid Width!');
+    }
+    if (!properHeightValue) {
+        return res.status(400).send('invalid Height!');
+    }
     // if data is complete, acess the values from the url
     if (completeData) {
         const name = req.query.name;
         const width = Number(req.query.width);
         const height = Number(req.query.height);
-        console.log(dir, thumbDir);
         //chech if the Tumb folder is present in the build, else create it
         if (!fs_2.default.existsSync(thumbDir)) {
             yield fs_2.default.promises.mkdir(thumbDir);
@@ -42,7 +48,7 @@ imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // check if file is present in the thumb output directory
         try {
             const thumbImage = yield fs_1.promises.readFile(`${thumbDir}/${name}-thumb.jpg`);
-            res.status(200).end(thumbImage);
+            return res.status(200).end(thumbImage);
         }
         catch (err) {
             console.log('Image has not been resized before, resizing in progress');
@@ -52,18 +58,18 @@ imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             yield (0, resizer_1.resizer)(name, width, height);
         }
         catch (err) {
-            res.status(500).send('Image failed to resize!');
+            return res.status(500).send('Image failed to resize!');
         }
         // fetch the image from the thumbs directory to send to user
         try {
             const newThumbImg = yield fs_1.promises.readFile(`${thumbDir}/${name}-thumb.jpg`);
-            res.status(200).end(newThumbImg);
+            return res.status(200).end(newThumbImg);
         }
         catch (err) {
-            res.status(500).send("Something Went Wrong !!");
+            res.status(500).send('Something Went Wrong !!');
         }
     }
     else
-        res.status(400).send('Invalid user input');
+        return res.status(400).send('Invalid user input');
 }));
 exports.default = imageRoute;

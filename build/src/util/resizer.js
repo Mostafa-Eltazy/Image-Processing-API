@@ -20,7 +20,6 @@ const dir = path_1.default.join(__dirname, '../../src/assets/full');
 const thumbDir = path_1.default.join(__dirname, '../../src/assets/thumb');
 function resizer(name, height, width) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(dir);
         try {
             yield (0, sharp_1.default)(`${dir}/${name}.jpg`)
                 .resize(width, height)
