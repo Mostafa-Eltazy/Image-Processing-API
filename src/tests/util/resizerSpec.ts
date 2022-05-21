@@ -2,7 +2,6 @@ import { resizer } from '../../util/resizer'
 import { promises as fs } from 'fs'
 import path from 'path'
 
-
 const dir = path.join(__dirname, '../../assets/full')
 const thumbDir = path.join(__dirname, '../../assets/thumb')
 
@@ -14,7 +13,7 @@ describe('Test image resizing', () => {
         await fs.readFile(`${thumbDir}/${filename}-thumb.jpg`)
     }
 
-    // it chechks the presence of the output file in the assets/thumb indicationg that the resizer worked 
+    // it chechks the presence of the output file in the assets/thumb indicationg that the resizer worked
     it('Checks the output image file is present in assets/thumb', async () => {
         const outputFilePath = await resizer(filename, height, width)
         expect(expected).toBeDefined()
