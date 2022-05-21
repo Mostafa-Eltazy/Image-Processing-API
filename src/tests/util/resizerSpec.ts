@@ -14,6 +14,7 @@ describe('Test image resizing', () => {
         await fs.readFile(`${thumbDir}/${filename}-thumb.jpg`)
     }
 
+    // it chechks the presence of the output file in the assets/thumb indicationg that the resizer worked 
     it('Checks the output image file is present in assets/thumb', async () => {
         const outputFilePath = await resizer(filename, height, width)
         expect(expected).toBeDefined()
