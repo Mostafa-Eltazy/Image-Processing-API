@@ -8,16 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const resizer_1 = require("../../util/resizer");
 const fs_1 = require("fs");
+const path_1 = __importDefault(require("path"));
+const dir = path_1.default.join(__dirname, '../../assets/full');
+const thumbDir = path_1.default.join(__dirname, '../../assets/thumb');
 describe('Test image resizing', () => {
     const filename = 'cat';
     const width = 140;
     const height = 200;
     const expected = function filePresnce() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield fs_1.promises.readFile(`src/assets/thumb/${filename}-thumb.jpg`);
+            yield fs_1.promises.readFile(`${thumbDir}/${filename}-thumb.jpg`);
         });
     };
     it('Checks the output image file is present in assets/thumb', () => __awaiter(void 0, void 0, void 0, function* () {

@@ -7,8 +7,6 @@ import { resizer } from '../../util/resizer'
 const imageRoute = express.Router()
 
 const dir = path.join(__dirname, '../../assets/full')
-
-//thumbnail directory
 const thumbDir = path.join(__dirname, '../../assets/thumb')
 
 imageRoute.get(

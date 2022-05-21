@@ -19,7 +19,6 @@ const path_1 = __importDefault(require("path"));
 const resizer_1 = require("../../util/resizer");
 const imageRoute = express_1.default.Router();
 const dir = path_1.default.join(__dirname, '../../assets/full');
-//thumbnail directory
 const thumbDir = path_1.default.join(__dirname, '../../assets/thumb');
 imageRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const properHeightValue = req.query.height &&
