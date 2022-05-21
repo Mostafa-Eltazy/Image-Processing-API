@@ -10,7 +10,7 @@ describe('Test image resizing', () => {
     const width = 140
     const height = 200
     const expected = async function filePresnce() {
-        await fs.readFile(`${thumbDir}/${filename}-thumb.jpg`)
+        await fs.readFile(`${thumbDir}/${filename}-thumb_${height}x${width}.jpg`)
     }
 
     // it chechks the presence of the output file in the assets/thumb indicationg that the resizer worked

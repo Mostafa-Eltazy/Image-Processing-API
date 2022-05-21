@@ -24,7 +24,6 @@ imageRoute.get(
             req.query.width &&
             Number(req.query.width) > 0 &&
             !Number.isNaN(Number(req.query.width))
-        console.log(properHeightValue, properWidthValue)
         const completeData =
             req.query.name && properHeightValue && properWidthValue
 
@@ -47,7 +46,7 @@ imageRoute.get(
             // check if file is present in the thumb output directory
             try {
                 const thumbImage = await fsPromises.readFile(
-                    `${thumbDir}/${name}-thumb.jpg`
+                    `${thumbDir}/${name}-thumb_${height}x${width}.jpg`
                 )
                 return res.status(200).end(thumbImage)
             } catch (err) {
@@ -64,7 +63,7 @@ imageRoute.get(
             // fetch the image from the thumbs directory to send to user
             try {
                 const newThumbImg = await fsPromises.readFile(
-                    `${thumbDir}/${name}-thumb.jpg`
+                    `${thumbDir}/${name}-thumb_${height}x${width}.jpg`
                 )
                 return res.status(200).end(newThumbImg)
             } catch (err) {
